@@ -174,6 +174,28 @@ public:
       //    last points to the last node of the updated list, and
       //    count is decremented by 1.
 
+    // ======= ADDED ABSTRACT FUNCTIONS (per your assignment) =======
+    virtual bool deleteMinOnce() = 0;
+      //Find and delete the node with the smallest info in the list.
+      //Delete only the first occurrence. Traverse the list only once.
+
+    virtual int deleteAll(const Type& item) = 0;
+      //Find and delete all occurrences of a given info from the list.
+      //Traverse the list only once. Return the number of nodes deleted.
+
+    virtual Type kthElement(int k) const = 0;
+      //Return the info of the kth element (1-based). If no such element
+      //exists, terminate the program.
+
+    virtual bool deleteKth(int k) = 0;
+      //Delete the kth element (1-based). If no such element exists,
+      //output an appropriate message and return false.
+
+    virtual void rotate() = 0;
+      //Function to remove the first node of a linked list and put it
+      //at the end of the linked list.
+    // =============================================================
+
     linkedListIterator<Type> begin();
       //Function to return an iterator at the beginning of the
       //linked list.

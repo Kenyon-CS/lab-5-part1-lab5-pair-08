@@ -42,6 +42,14 @@ public:
       //    is deleted from the list. first points to the first
       //    node, last points to the last node of the updated
       //    list, and count is decremented by 1.
+
+    // ===== NEW FUNCTIONS ADDED =====
+    bool deleteMinOnce();                 // delete first occurrence of smallest element
+    int  deleteAll(const Type& item);     // delete all occurrences of a value
+    Type kthElement(int k) const;         // return info at kth position
+    bool deleteKth(int k);                // delete kth element
+    void rotate();                        // move first node to end
+    // =================================
 };
 
 
@@ -168,5 +176,126 @@ void unorderedLinkedList<Type>::deleteNode(const Type& deleteItem)
     }//end else
 }//end deleteNode
 
+
+// ======================
+// ADDED FUNCTION BODIES
+// ======================
+
+template <class Type>
+bool unorderedLinkedList<Type>::deleteMinOnce() {
+    if (first == NULL) return false;
+
+    nodeType<Type>* minNode = first;
+    nodeType<Type>* minPrev = NULL;
+
+    nodeType<Type>* prev = first;
+    nodeType<Type>* curr = first->link;
+
+    while (curr != NULL) {
+        if (curr->info < minNode->info) {
+            minNode = curr;
+            minPrev = prev;
+        }
+        prev = curr;
+        curr = curr->link;
+    }
+
+    if (minPrev == NULL) {
+        first = minNode->link;
+        if (last == minNode) last = first;
+    } else {
+        minPrev->link = minNode->link;
+        if (last == minNode) last = minPrev;
+    }
+
+    delete minNode;
+    count--;
+    if (count == 0) last = NULL;
+    return true;
+}
+
+template <class Type>
+int unorderedLinkedList<Type>::deleteAll(const Type& item) {
+    int removed = 0;
+    nodeType<Type> dummy;
+    dummy.link = first;
+
+    nodeType<Type>* prev = &dummy;
+    nodeType<Type>* curr = first;
+
+    while (curr != NULL) {
+        if (curr->info == item) {
+            prev->link = curr->link;
+            nodeType<Type>* del = curr;
+            curr = prev->link;
+            if (del == last) last = (prev == &dummy ? NULL : prev);
+            delete del;
+            count--;
+            removed++;
+        } else {
+            prev = curr;
+            curr = curr->link;
+        }
+    }
+
+    first = dummy.link;
+    if (count == 0) last = NULL;
+    return removed;
+}
+
+#include <cstdlib>
+#include <iostream>
+
+template <class Type>
+Type unorderedLinkedList<Type>::kthElement(int k) const {
+    if (k <= 0 || k > count) {
+        cerr << "kthElement: invalid k=" << k
+             << " for list size " << count << ". Terminating.\n";
+        exit(1);
+    }
+
+    nodeType<Type>* curr = first;
+    for (int i = 1; i < k; ++i) curr = curr->link;
+    return curr->info;
+}
+
+template <class Type>
+bool unorderedLinkedList<Type>::deleteKth(int k) {
+    if (k <= 0 || k > count) {
+        cout << "deleteKth: invalid k=" << k
+             << " for list size " << count << ".\n";
+        return false;
+    }
+
+    if (k == 1) {
+        nodeType<Type>* del = first;
+        first = first->link;
+        if (last == del) last = first;
+        delete del;
+        count--;
+        if (count == 0) last = NULL;
+        return true;
+    }
+
+    nodeType<Type>* prev = first;
+    for (int i = 2; i < k; ++i) prev = prev->link;
+    nodeType<Type>* del = prev->link;
+    prev->link = del->link;
+    if (last == del) last = prev;
+    delete del;
+    count--;
+    return true;
+}
+
+template <class Type>
+void unorderedLinkedList<Type>::rotate() {
+    if (first == NULL || first->link == NULL) return;
+
+    nodeType<Type>* oldHead = first;
+    first = first->link;
+    last->link = oldHead;
+    last = oldHead;
+    last->link = NULL;
+}
 
 #endif

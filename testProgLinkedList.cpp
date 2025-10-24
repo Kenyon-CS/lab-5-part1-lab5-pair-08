@@ -62,6 +62,64 @@ int main()                                          //Line 4
         cout << *it << " ";                         //Line 36
     cout << endl;                                   //Line 37
 
+
+    // ============================================================
+    // NEW TESTS FOR EXTENDED FUNCTIONS
+    // ============================================================
+
+    cout << "\n--- Testing new linked list operations ---\n";
+
+    cout << "Initial list2: ";
+    list2.print();
+    cout << endl;
+
+    // 1. deleteMinOnce
+    bool didMin = list2.deleteMinOnce();
+    cout << "\nAfter deleteMinOnce (" << (didMin ? "deleted smallest" : "empty list") << "): ";
+    list2.print();
+    cout << endl;
+
+    // 2. deleteAll
+    cout << "\nEnter a number to delete all its occurrences from list2: ";
+    cin >> num;
+    int removed = list2.deleteAll(num);
+    cout << "Removed " << removed << " occurrence(s) of " << num << ".\n";
+    cout << "After deleteAll: ";
+    list2.print();
+    cout << endl;
+
+    // 3. kthElement
+    if (!list2.isEmptyList())
+    {
+        cout << "\nEnter k (1-based) to get kthElement: ";
+        int k;
+        cin >> k;
+        cout << "kthElement(" << k << ") = " << list2.kthElement(k) << endl;
+    }
+    else
+        cout << "\nList2 is empty. Skipping kthElement test.\n";
+
+    // 4. deleteKth
+    cout << "\nEnter k (1-based) to deleteKth: ";
+    int kdel;
+    cin >> kdel;
+    bool ok = list2.deleteKth(kdel);
+    cout << "deleteKth(" << kdel << ") -> " << (ok ? "deleted" : "invalid index") << endl;
+    cout << "After deleteKth: ";
+    list2.print();
+    cout << endl;
+
+    // 5. rotate
+    cout << "\nBefore rotate: ";
+    list2.print();
+    cout << endl;
+    list2.rotate();
+    cout << "After rotate: ";
+    list2.print();
+    cout << endl;
+
+    // ============================================================
+
     //system("pause");
     return 0;                                       //Line 38
 }                                                   //Line 39
